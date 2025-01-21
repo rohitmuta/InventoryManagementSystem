@@ -1,4 +1,4 @@
-Inventory Management System
+**Inventory Management System**
 
 This project is an Inventory Management System built with Spring Boot and MySQL. It provides a REST API for managing items in an inventory. The API supports CRUD (Create, Read, Update, Delete) operations on inventory items.
 
