@@ -19,7 +19,7 @@ This project is an **Inventory Management System** built using **Spring Boot** a
   }
 - **Response**:
 `Status: 201 Created`
--**Body**:
+- **Body**:
   ```json
   {  
     "id": 1,  
