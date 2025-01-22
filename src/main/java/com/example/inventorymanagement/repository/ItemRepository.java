@@ -1,7 +1,9 @@
 package com.example.inventorymanagement.repository;
 
-import com.example.inventorymanagement.model.Item;
+import com.example.inventorymanagement.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+import java.util.UUID;
+
+public interface ItemRepository extends JpaRepository<Item, UUID> {
 }

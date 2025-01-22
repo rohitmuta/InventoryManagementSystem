@@ -1,37 +1,65 @@
 package com.example.inventorymanagement.service;
 
-import com.example.inventorymanagement.model.Item;
+import com.example.inventorymanagement.entity.Item;
 import com.example.inventorymanagement.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public ResponseEntity<?> getAllItems() {
+        if (itemRepository.findAll().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Items found!");
+        }
+        else {
+            return ResponseEntity.ok().body(itemRepository.findAll());
+        }
     }
 
-    public Optional<Item> getItemById(Long id) {
+    public ResponseEntity<?> getItemById(UUID id) {
         if(itemRepository.existsById(id)){
-            return itemRepository.findById(id);
+            return ResponseEntity.ok().body(itemRepository.findById(id));
         }
         else{
-            return Optional.empty();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item Not Found");
         }
     }
-    public Item saveItem(Item item) {
-        return itemRepository.save(item);
+
+    public ResponseEntity<Item> addItem(Item item) {
+        itemRepository.save(item);
+        return ResponseEntity.ok(item);
     }
-    public void deleteItem(Long id) {
+
+    public ResponseEntity<?> updateItems(UUID id, Item item) {
+        item.setId(id);
+        if(itemRepository.existsById(id)) {
+            itemRepository.save(item);
+            return ResponseEntity.ok(item);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item Not Found!");
+        }
+
+    }
+    public ResponseEntity<String> deleteItem(UUID id) {
+        if (itemRepository.existsById(id)) {
             itemRepository.deleteById(id);
+            return ResponseEntity.ok("Item Deleted!");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item Not Found!");
+        }
     }
-    public void deleteAllItems() {
+
+    public String deleteAllItems() {
         itemRepository.deleteAll();
+        return "All Items Deleted!";
     }
 }
